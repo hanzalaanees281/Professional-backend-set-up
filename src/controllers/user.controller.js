@@ -158,11 +158,11 @@ const userLogin = asyncHandler(async (req, res) => {
     }
 
     // 6: access and refresh token
-    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user_id)
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
 
 
     // 7: remove password and refreshtoken
-    const loggedInUser = await User.findById(user_id).select("-password -refreshToken")
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
 
     // 8: send cookie and response
@@ -172,7 +172,7 @@ const userLogin = asyncHandler(async (req, res) => {
     }
 
     return res
-    .staus(200)
+    .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(
@@ -211,8 +211,8 @@ const userLogout = asyncHandler(async (req, res) => {
 
     return res
     .status(200)
-    .clearcookie("accessToken", options)
-    .clearcookie("refreshToken", options)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "user logged out"))
 })
 
